@@ -41,3 +41,32 @@ would need to put the `setInterval` on the consumer side.
 
 Generator functions are more useful as a passive factory of values (e.g.
 Fibonacci sequence)
+
+
+## Error Handling & Completion
+
+
+### Dealing with Errors
+
+`observer.error` can be used to "deliver" errors in an observable.
+
+The second argument to `subscribe` is a function to handle errors.
+
+If you are using the `Observable.create` API it is recommended to wrap the
+contained logic in a try/catch block, with `observer.error` being used in the
+catch so that the subscribed consumer can properly handle any errors.
+
+
+### Finishing an Observable
+
+`observer.complete` is a function that takes no arguments and is called by the
+observable producer to let all subscribers know that it has "finished", it won't
+be delivering any more values.
+
+The third argument to `subscribe` is a function to handle completion.
+
+A use case for this concept would be if you wanted to concatenate two observables
+together. This could only be accomplished if the first observable ends.
+
+Another use case would be if the observer was only interested in the final value
+produced. "Last" can only be determined if the observable has finished.
